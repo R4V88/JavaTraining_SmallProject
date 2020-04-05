@@ -2,6 +2,8 @@ package dao;
 
 import api.ProductDao;
 import model.Product;
+import model.parser.ProductParser;
+import utils.FileUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,22 +11,41 @@ import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
 
-    private String fileName;
+    private final String FILE_NAME;
+    private final String PRODUCT_TYPE;
 
-    public ProductDaoImpl() {
-        this.fileName = "Products.txt";
+    public ProductDaoImpl(String FILE_NAME, String PRODUCT_TYPE) throws IOException {
+        this.FILE_NAME = FILE_NAME;
+        this.PRODUCT_TYPE = PRODUCT_TYPE.toUpperCase();
+        FileUtils.createNewFile(FILE_NAME);
     }
 
     @Override
-    public void saveProduct(Product product) throws FileNotFoundException {
-        PrintWriter pw = new PrintWriter(new FileOutputStream(fileName, true));
-        pw.write(product.toString() + "\n");
-        pw.close();
+    public List<Product> getAllProducts() throws IOException {
+        List<Product> productsList = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(FILE_NAME));
+        String lineFromFile;
+        while ((lineFromFile = br.readLine()) != null) {
+            Product product = ProductParser.stringToProduct(lineFromFile, PRODUCT_TYPE);
+            if(product != null){
+                productsList.add(product);
+            }
+        }
+        br.close();
+        /*
+            Loop for tests.
+            Needs to be removed.
+         */
+        for(Product product: productsList){
+            System.out.println(product.toString());
+        }
+
+        return productsList;
     }
 
     @Override
     public void saveProducts(List<Product> products) throws FileNotFoundException {
-        PrintWriter pw = new PrintWriter(new FileOutputStream(fileName, false));
+        PrintWriter pw = new PrintWriter(new FileOutputStream(FILE_NAME, true));
         for (Product product : products) {
             pw.write(product.toString() + "\n");
         }
@@ -32,12 +53,18 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public void saveProduct(Product product) throws IOException {
+        List<Product> products = getAllProducts();
+        products.add(product);
+        saveProducts(products);
+    }
+
+    @Override
     public void removeProductById(long productId) throws IOException {
         List<Product> productList = getAllProducts();
         for (int i = 0; i < productList.size(); i++) {
             if (productList.get(i).getId() == productId) {
-                Product product = productList.get(i);
-                productList.remove(product);
+                productList.remove(productList.get(i));
             }
         }
         saveProducts(productList);
@@ -48,56 +75,31 @@ public class ProductDaoImpl implements ProductDao {
         List<Product> productList = getAllProducts();
         for (int i = 0; i < productList.size(); i++) {
             if (productList.get(i).getProductName().equals(productName)) {
-                Product product = productList.get(i);
-                productList.remove(product);
+                productList.remove(productList.get(i));
             }
         }
         saveProducts(productList);
     }
 
     @Override
-    public List<Product> getAllProducts() throws IOException {
-        List<Product> productsList = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
-        String lineFromFile;
-        while ((lineFromFile = br.readLine()) != null) {
-            String[] userString = stringToArrayConverter(lineFromFile);
-            productsList.add(new Product(
-                    Long.parseLong(userString[0]),
-                    userString[1],
-                    Float.parseFloat(userString[2]),
-                    Float.parseFloat(userString[3]),
-                    userString[4],
-                    Integer.parseInt(userString[5])
-            ));
-        }
-        br.close();
-        return productsList;
-    }
-
-    public String[] stringToArrayConverter(String string) {
-        String[] stringArray = null;
-        stringArray = string.split(",");
-        return stringArray;
-    }
-
-    @Override
-    public void getProductById(long productId) throws IOException {
+    public Product getProductById(long productId) throws IOException {
         List<Product> productList = getAllProducts();
         for (Product product : productList) {
             if (product.getId() == productId) {
-                System.out.println(product.toString());
+                return product;
             }
         }
+        return null;
     }
 
     @Override
-    public void getProductByProductName(String productName) throws IOException {
+    public Product getProductByProductName(String productName) throws IOException {
         List<Product> productList = getAllProducts();
         for (Product product : productList) {
             if (product.getProductName().equals(productName)) {
-                System.out.println(product.toString());
+                return product;
             }
         }
+        return null;
     }
 }

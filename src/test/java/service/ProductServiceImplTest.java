@@ -193,7 +193,7 @@ public class ProductServiceImplTest {
 
         //then
         ProductServiceImpl productService = new ProductServiceImpl(new ArrayList<>(products));
-        Boolean isProductWithName = productService.isProductWithNameExist("Oreo");
+        Boolean isProductWithName = productService.isProductExist("Oreo");
 
         Boolean isCookie = products.contains(cookies);
 
@@ -217,7 +217,7 @@ public class ProductServiceImplTest {
         ProductServiceImpl productService = new ProductServiceImpl(new ArrayList<>(products));
         List<Product> productsFromTestClass = productService.getAllProducts();
         productsFromTestClass.remove(cookies);
-        Boolean isProductWithName = productService.isProductWithNameExist("Oreo");
+        Boolean isProductWithName = productService.isProductExist("Oreo");
 
         Boolean isCookie = products.contains(cookies);
 
@@ -240,7 +240,7 @@ public class ProductServiceImplTest {
 
         //then
         ProductServiceImpl productService = new ProductServiceImpl(new ArrayList<>(products));
-        Boolean isCookieInTestClass = productService.isProductWithIdExist(12);
+        Boolean isCookieInTestClass = productService.isProductExist(12);
 
         Boolean isCookie = products.contains(cookies);
 
@@ -264,7 +264,7 @@ public class ProductServiceImplTest {
         ProductServiceImpl productService = new ProductServiceImpl(new ArrayList<>(products));
         List<Product> productsFromTestClass = productService.getAllProducts();
         productsFromTestClass.remove(cookies);
-        Boolean isCookieInTestClass = productService.isProductWithIdExist(12);
+        Boolean isCookieInTestClass = productService.isProductExist(12);
 
         Boolean isCookie = products.contains(cookies);
 

@@ -1,6 +1,7 @@
 package model;
 
 public class Product {
+    public static final String PRODUCT_SEPARATOR = "," ;
     private long id;
     private String productName;
     private float price;
@@ -17,7 +18,7 @@ public class Product {
         this.productCount = productCount;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -52,6 +53,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return id + "," + productName + "," + price + "," + weight + "," + color + "," + productCount;
+        return id + PRODUCT_SEPARATOR + productName + PRODUCT_SEPARATOR + price + PRODUCT_SEPARATOR + weight + PRODUCT_SEPARATOR + color + PRODUCT_SEPARATOR + productCount;
     }
 }

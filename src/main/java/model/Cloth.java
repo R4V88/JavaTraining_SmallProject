@@ -4,7 +4,7 @@ public class Cloth extends Product {
     private String size;
     private String material;
 
-    public Cloth(Long id, String productName, Float price, Float weight, String color, Integer productCount, String size, String material) {
+    public Cloth(long id, String productName, float price, float weight, String color, int productCount, String size, String material) {
         super(id, productName, price, weight, color, productCount);
         this.size = size;
         this.material = material;
@@ -20,9 +20,7 @@ public class Cloth extends Product {
 
     @Override
     public String toString() {
-        return super.toString() + "Cloth{" +
-                "size='" + size + '\'' +
-                ", material='" + material + '\'' +
-                '}';
+        return super.toString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material;
     }
+
 }
