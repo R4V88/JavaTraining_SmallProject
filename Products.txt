@@ -1,0 +1,2 @@
+12,buty,120.0,15.0,czerwone,3
+14,buty,120.0,15.0,czerwone,3
