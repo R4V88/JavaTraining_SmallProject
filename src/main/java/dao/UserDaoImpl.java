@@ -11,16 +11,29 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 
-    private final String FILE_NAME;
+    private final String FILE_NAME = "users.data";
+    private static UserDaoImpl instance = null;
 
-    public UserDaoImpl(String FILE_NAME) throws IOException {
-        this.FILE_NAME = FILE_NAME;
-        FileUtils.createNewFile(FILE_NAME);
+    public static UserDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new UserDaoImpl();
+        }
+        return instance;
+    }
+
+    public UserDaoImpl() {
+        try {
+            FileUtils.createNewFile(FILE_NAME);
+        } catch (IOException e) {
+            System.out.println("Error - wrong file path!");
+            //exit zamyka cała aplikacje.
+            System.exit(-1);
+        }
     }
 
     @Override
-    public void saveUsers(List<User> users) throws IOException {
-        PrintWriter pw = new PrintWriter(new FileWriter(FILE_NAME, true));
+    public void saveUsers(List<User> users) throws FileNotFoundException {
+        PrintWriter pw = new PrintWriter(new FileOutputStream(FILE_NAME, true));
         for (User user : users) {
             pw.write(user.toString() + "\n");
         }

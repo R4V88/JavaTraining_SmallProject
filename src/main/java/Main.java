@@ -1,13 +1,18 @@
+import api.ProductDao;
+import api.UserDao;
 import dao.ProductDaoImpl;
-import model.Boots;
-import model.Product;
+import dao.UserDaoImpl;
+import exception.UserLoginAlreadyExistException;
+import exception.UserShortLengthLoginException;
+import exception.UserShortLengthPasswordException;
+import model.Cloth;
+import model.User;
+import validator.UserValidator;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, UserLoginAlreadyExistException, UserShortLengthPasswordException, UserShortLengthLoginException {
 //        User user = new User(1l, "admin", "admin");
 //
 //        Cloth cloth = new Cloth(1l, "T-shirt", 35.9f, 0.3f, "Black", 10,"XL", "Cotton");
@@ -58,11 +63,20 @@ public class Main {
 //        userDao.getAllUsers();
 
 
-        ProductDaoImpl bootsOnly = new ProductDaoImpl("Products.txt", "boots");
-        List<Product> productList = new ArrayList<>();
-        Product bootki = new Boots(1, "sofixy", 120, 15, "black", 24, 99, true);
-        productList.add(bootki);
-        bootsOnly.saveProducts(productList);
-        bootsOnly.getAllProducts();
+//        ProductDaoImpl bootsOnly = new ProductDaoImpl("Products.txt", "boots");
+//        List<Product> productList = new ArrayList<>();
+//        Product bootki = new Boots(1, "sofixy", 120, 15, "black", 24, 99, true);
+//        productList.add(bootki);
+//        bootsOnly.saveProducts(productList);
+//        bootsOnly.getAllProducts();
+
+        ProductDao productDaoCloth = new ProductDaoImpl("clothes", "cloth");
+        productDaoCloth.saveProduct(new Cloth(1, "T-shirt", 11f, 0.5f, "black", 12, "L", "cotton"));
+
+        UserValidator userValidator = UserValidator.getInstance();
+        UserDao userDao = UserDaoImpl.getInstance();
+        User user = new User(2, "tak", "pass");
+//        userValidator.isValidate(user);
+        userDao.saveUser(user);
     }
 }

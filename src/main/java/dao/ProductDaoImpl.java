@@ -14,10 +14,14 @@ public class ProductDaoImpl implements ProductDao {
     private final String FILE_NAME;
     private final String PRODUCT_TYPE;
 
-    public ProductDaoImpl(String FILE_NAME, String PRODUCT_TYPE) throws IOException {
+    public ProductDaoImpl(String FILE_NAME, String PRODUCT_TYPE) {
         this.FILE_NAME = FILE_NAME;
         this.PRODUCT_TYPE = PRODUCT_TYPE.toUpperCase();
-        FileUtils.createNewFile(FILE_NAME);
+        try {
+            FileUtils.createNewFile(FILE_NAME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -36,15 +40,15 @@ public class ProductDaoImpl implements ProductDao {
             Loop for tests.
             Needs to be removed.
          */
-        for (Product product : productsList) {
-            System.out.println(product.toString());
-        }
+//        for (Product product : productsList) {
+//            System.out.println(product.toString());
+//        }
 
         return productsList;
     }
 
     @Override
-    public void saveProducts(List<Product> products) throws FileNotFoundException {
+    public void saveProducts(List<Product> products) throws IOException {
         PrintWriter pw = new PrintWriter(new FileOutputStream(FILE_NAME, true));
         for (Product product : products) {
             pw.write(product.toString() + "\n");

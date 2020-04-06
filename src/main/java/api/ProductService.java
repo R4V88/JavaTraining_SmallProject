@@ -2,20 +2,21 @@ package api;
 
 import model.Product;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
 
-    List<Product> getAllProducts();
+    List<Product> getAllProducts() throws IOException;
 
-    int getCountOfProducts(List<Product> products);
+    int getCountOfProducts(List<Product> products) throws IOException;
 
-    Product getProductByName(String productName);
+    Product getProductByName(String productName) throws IOException;
 
     boolean isProductInWarehouse(String productName);
 
     boolean isProductExist(String productName);
 
-    boolean isProductExist(long id);
+    boolean isProductExist(long productId);
 
 }

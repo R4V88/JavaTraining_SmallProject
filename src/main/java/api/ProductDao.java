@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProductDao {
     void saveProduct(Product product) throws IOException;
 
-    void saveProducts(List<Product> products) throws FileNotFoundException;
+    void saveProducts(List<Product> products) throws FileNotFoundException, IOException;
 
     void removeProductById(long productId) throws IOException;
 
