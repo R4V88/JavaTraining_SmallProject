@@ -52,7 +52,7 @@ public class UserDaoImpl implements UserDao {
         List<User> userList = getAllUsers();
         for (User user : userList) {
             if (user.getLogin().equals(login)) {
-               return user;
+                return user;
             }
         }
         return null;

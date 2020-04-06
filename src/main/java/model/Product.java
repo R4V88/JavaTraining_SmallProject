@@ -1,7 +1,7 @@
 package model;
 
 public class Product {
-    public static final String PRODUCT_SEPARATOR = "," ;
+    public static final String PRODUCT_SEPARATOR = ",";
     private long id;
     private String productName;
     private float price;

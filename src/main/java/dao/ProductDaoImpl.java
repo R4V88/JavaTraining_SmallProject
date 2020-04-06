@@ -27,7 +27,7 @@ public class ProductDaoImpl implements ProductDao {
         String lineFromFile;
         while ((lineFromFile = br.readLine()) != null) {
             Product product = ProductParser.stringToProduct(lineFromFile, PRODUCT_TYPE);
-            if(product != null){
+            if (product != null) {
                 productsList.add(product);
             }
         }
@@ -36,7 +36,7 @@ public class ProductDaoImpl implements ProductDao {
             Loop for tests.
             Needs to be removed.
          */
-        for(Product product: productsList){
+        for (Product product : productsList) {
             System.out.println(product.toString());
         }
 
