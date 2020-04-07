@@ -38,12 +38,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) throws IOException {
-        userDao.saveUser(user);
+    public boolean addUser(User user) {
+        try {
+            userDao.saveUser(user);
+            List<User> users = userDao.getAllUsers();
+            for (User user1 : users) {
+                if (user1.equals(user)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public void removeUserById(long userId) throws IOException {
         userDao.removeUserById(userId);
+    }
+
+    @Override
+    public User getUserById(long id) {
+        return null;
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return null;
+    }
+
+    @Override
+    public boolean isCorrectLoginAndPassword(String login, String password) {
+        return false;
     }
 }

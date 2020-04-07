@@ -11,12 +11,18 @@ import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
 
-    private final String FILE_NAME;
-    private final String PRODUCT_TYPE;
+    private static final String FILE_NAME = "products.data";
+    private static ProductDaoImpl instance = null;
 
-    public ProductDaoImpl(String FILE_NAME, String PRODUCT_TYPE) {
-        this.FILE_NAME = FILE_NAME;
-        this.PRODUCT_TYPE = PRODUCT_TYPE.toUpperCase();
+    public static ProductDaoImpl getInstance(){
+        if(instance == null){
+            return instance = new ProductDaoImpl();
+        }
+        return instance;
+    }
+
+
+    private ProductDaoImpl() {
         try {
             FileUtils.createNewFile(FILE_NAME);
         } catch (IOException e) {
@@ -30,7 +36,7 @@ public class ProductDaoImpl implements ProductDao {
         BufferedReader br = new BufferedReader(new FileReader(FILE_NAME));
         String lineFromFile;
         while ((lineFromFile = br.readLine()) != null) {
-            Product product = ProductParser.stringToProduct(lineFromFile, PRODUCT_TYPE);
+            Product product = ProductParser.stringToProduct(lineFromFile);
             if (product != null) {
                 productsList.add(product);
             }
@@ -48,7 +54,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void saveProducts(List<Product> products) throws IOException {
+    public void saveProducts(List<Product> products) throws FileNotFoundException {
         PrintWriter pw = new PrintWriter(new FileOutputStream(FILE_NAME, true));
         for (Product product : products) {
             pw.write(product.toString() + "\n");
@@ -85,7 +91,6 @@ public class ProductDaoImpl implements ProductDao {
         saveProducts(productList);
     }
 
-    @Override
     public Product getProductById(long productId) throws IOException {
         List<Product> productList = getAllProducts();
         for (Product product : productList) {
@@ -96,7 +101,6 @@ public class ProductDaoImpl implements ProductDao {
         return null;
     }
 
-    @Override
     public Product getProductByProductName(String productName) throws IOException {
         List<Product> productList = getAllProducts();
         for (Product product : productList) {

@@ -3,6 +3,7 @@ package model;
 public class Cloth extends Product {
     private String size;
     private String material;
+    public static final char PRODUCT_TYPE = 'C';
 
     public Cloth(long id, String productName, float price, float weight, String color, int productCount, String size, String material) {
         super(id, productName, price, weight, color, productCount);
@@ -20,7 +21,7 @@ public class Cloth extends Product {
 
     @Override
     public String toString() {
-        return super.toString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material;
+        return PRODUCT_TYPE + PRODUCT_SEPARATOR + getBasicProductString() +PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material + PRODUCT_SEPARATOR;
     }
 
 }

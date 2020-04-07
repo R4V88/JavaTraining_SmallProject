@@ -70,13 +70,13 @@ public class Main {
 //        bootsOnly.saveProducts(productList);
 //        bootsOnly.getAllProducts();
 
-        ProductDao productDaoCloth = new ProductDaoImpl("clothes", "cloth");
-        productDaoCloth.saveProduct(new Cloth(1, "T-shirt", 11f, 0.5f, "black", 12, "L", "cotton"));
-
-        UserValidator userValidator = UserValidator.getInstance();
-        UserDao userDao = UserDaoImpl.getInstance();
-        User user = new User(2, "tak", "pass");
-//        userValidator.isValidate(user);
-        userDao.saveUser(user);
+//        ProductDao productDaoCloth = new ProductDaoImpl("clothes", "cloth");
+//        productDaoCloth.saveProduct(new Cloth(1, "T-shirt", 11f, 0.5f, "black", 12, "L", "cotton"));
+//
+//        UserValidator userValidator = UserValidator.getInstance();
+//        UserDao userDao = UserDaoImpl.getInstance();
+//        User user = new User(2, "tak", "pass");
+////        userValidator.isValidate(user);
+//        userDao.saveUser(user);
     }
 }

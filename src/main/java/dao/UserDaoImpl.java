@@ -60,7 +60,6 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
-    @Override
     public User getUserByLogin(String login) throws IOException {
         List<User> userList = getAllUsers();
         for (User user : userList) {
@@ -71,7 +70,6 @@ public class UserDaoImpl implements UserDao {
         return null;
     }
 
-    @Override
     public User getUserById(long id) throws IOException {
         List<User> userList = getAllUsers();
         for (User user : userList) {

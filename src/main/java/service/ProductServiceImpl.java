@@ -10,8 +10,9 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
 
-    private ProductDao productDao = new ProductDaoImpl("products.data", "PRODUCT");
+    private ProductDao productDao = ProductDaoImpl.getInstance();
     private static ProductServiceImpl instance = null;
+
 
     public static ProductServiceImpl getInstance() {
         if (instance == null) {
@@ -29,13 +30,36 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int getCountOfProducts(List<Product> products) throws IOException {
+    public int getCountOfProducts() throws IOException {
         return productDao.getAllProducts().size();
     }
 
     @Override
     public Product getProductByName(String productName) throws IOException {
-        return productDao.getProductByProductName(productName);
+        List<Product> products = productDao.getAllProducts();
+
+        for(Product product : products){
+            if(product.getProductName().equals(productName)){
+                return product;
+            }
+        }
+        return null;
+    }
+
+    public Product getProductById (long id) {
+        try {
+            List<Product> products = productDao.getAllProducts();
+
+            for(Product product : products){
+                if(product.getId() == id){
+                    return product;
+                }
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -56,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
     public boolean isProductExist(String productName) {
         Product product = null;
         try {
-            product = productDao.getProductByProductName(productName);
+            product = getProductByName(productName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,18 +92,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean isProductExist(long id) {
-        Product product = null;
+        Product product = getProductById(id);
 
+        return product != null;
+    }
+
+    @Override
+    public boolean saveProduct(Product product) {
         try {
-            product = productDao.getProductById(id);
+            List<Product> productList = productDao.getAllProducts();
+            for(Product product1 : productList) {
+                product.equals(product);
+                return true;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        if (product == null) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 }

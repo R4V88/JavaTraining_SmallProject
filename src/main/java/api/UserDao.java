@@ -11,13 +11,9 @@ public interface UserDao {
 
     void saveUsers(List<User> users) throws FileNotFoundException;
 
-    List<User> getAllUsers() throws IOException;
-
-    User getUserByLogin(String login) throws IOException;
-
-    User getUserById(long id) throws IOException;
+    void removeUserById(long id) throws IOException;
 
     void removeUserByLogin(String login) throws IOException;
 
-    void removeUserById(long id) throws IOException;
+    List<User> getAllUsers() throws IOException;
 }
