@@ -4,6 +4,7 @@ import api.ProductDao;
 import api.ProductService;
 import dao.ProductDaoImpl;
 import model.Product;
+import validator.ProductValidator;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,6 +13,7 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductDao productDao = ProductDaoImpl.getInstance();
     private static ProductServiceImpl instance = null;
+    private ProductValidator productValidator = ProductValidator.getInstance();
 
 
     public static ProductServiceImpl getInstance() {
@@ -46,8 +48,8 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-    public Product getProductById (long id) {
-        try {
+    public Product getProductById (long id) throws  IOException{
+
             List<Product> products = productDao.getAllProducts();
 
             for(Product product : products){
@@ -56,9 +58,6 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
 
-        } catch (IOException e){
-            e.printStackTrace();
-        }
         return null;
     }
 
@@ -92,21 +91,28 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean isProductExist(long id) {
-        Product product = getProductById(id);
+        Product product = null;
 
-        return product != null;
+        try {
+            product = getProductById(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(product == null) return false;
+
+        return true;
     }
 
     @Override
     public boolean saveProduct(Product product) {
         try {
-            List<Product> productList = productDao.getAllProducts();
-            for(Product product1 : productList) {
-                product.equals(product);
+            if(productValidator.isValidate(product)){
+                productDao.saveProduct(product);
                 return true;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return false;
     }

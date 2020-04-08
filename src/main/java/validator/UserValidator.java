@@ -1,13 +1,8 @@
 package validator;
 
-import api.UserDao;
-import dao.UserDaoImpl;
-import exception.UserLoginAlreadyExistException;
 import exception.UserShortLengthLoginException;
 import exception.UserShortLengthPasswordException;
 import model.User;
-
-import java.io.IOException;
 
 public class UserValidator {
 
@@ -15,7 +10,6 @@ public class UserValidator {
     private final int MIN_LENGTH_LOGIN = 4;
 
     private static UserValidator instance = null;
-    private UserDao userDao = UserDaoImpl.getInstance();
 
     private UserValidator() {
 
@@ -28,15 +22,12 @@ public class UserValidator {
         return instance;
     }
 
-    public boolean isValidate(User user) throws UserShortLengthPasswordException, UserShortLengthLoginException, UserLoginAlreadyExistException {
+    public boolean isValidate(User user) throws UserShortLengthPasswordException, UserShortLengthLoginException {
         if (isPasswordValid(user.getPassword())) {
             throw new UserShortLengthPasswordException("Password is too short!");
         }
         if (isLoginValid(user.getLogin())) {
             throw new UserShortLengthLoginException("Login is too short!");
-        }
-        if (isLoginExist(user.getLogin())) {
-            throw new UserLoginAlreadyExistException("User with this login already exists!");
         }
         return true;
     }
@@ -48,18 +39,4 @@ public class UserValidator {
     private boolean isLoginValid(String login) {
         return login.length() >= MIN_LENGTH_LOGIN;
     }
-
-    private boolean isLoginExist(String login) {
-        User user = null;
-        try {
-            user = userDao.getUserByLogin(login);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (user == null) {
-            return false;
-        }
-        return true;
-    }
-
 }

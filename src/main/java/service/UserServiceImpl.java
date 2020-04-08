@@ -1,8 +1,11 @@
 package service;
 
+import api.UserDao;
 import api.UserService;
 import dao.UserDaoImpl;
+import exception.UserLoginAlreadyExistException;
 import model.User;
+import validator.UserValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +13,8 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private UserDaoImpl userDao;
-    private List<User> users;
+    private UserDao userDao = UserDaoImpl.getInstance();
+    private UserValidator userValidator = UserValidator.getInstance();
 
     private static UserServiceImpl instance = null;
 
@@ -22,16 +25,6 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
-    //    konstruktor domyślny
-    private UserServiceImpl() {
-        this.users = new ArrayList<>();
-    }
-
-    //    konstruktor parametryzowany
-    private UserServiceImpl(List<User> users) {
-        this.users = users;
-    }
-
     @Override
     public List<User> getAllUsers() throws IOException {
         return userDao.getAllUsers();
@@ -40,17 +33,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean addUser(User user) {
         try {
-            userDao.saveUser(user);
-            List<User> users = userDao.getAllUsers();
-            for (User user1 : users) {
-                if (user1.equals(user)) {
-                    return true;
-                }
+            if(isLoginAlreadyExist(user.getLogin())){
+                throw new UserLoginAlreadyExistException();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            if(userValidator.isValidate(user)){
+                userDao.saveUser(user);
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());;
         }
         return false;
+    }
+
+    private boolean isLoginAlreadyExist(String login) {
+        User user = getUserByLogin(login);
+        return  user != null;
     }
 
     @Override
@@ -59,17 +57,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(long id) {
-        return null;
+    public User getUserById(long id) throws IOException {
+      List <User> users = getAllUsers();
+      for(User user: users){
+          if(user.getId() == id){
+              return user;
+          }
+      }
+      return null;
     }
 
     @Override
     public User getUserByLogin(String login) {
+        List<User> users = null;
+        try {
+            users = getAllUsers();
+            for(User user : users) {
+                if(user.getLogin().equals(login)){
+                    return user;
+                }
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public boolean isCorrectLoginAndPassword(String login, String password) {
-        return false;
+        User found = getUserByLogin(login);
+
+        if(found == null) {
+            return false;
+        }
+
+        boolean isCorrectLogin = found.getLogin().equals(login);
+        boolean isCorrectPass = found.getPassword().equals(password);
+
+        return isCorrectLogin && isCorrectPass;
     }
 }
