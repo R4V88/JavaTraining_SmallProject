@@ -10,7 +10,7 @@ public enum Color {
 
     private String hexNumber;
 
-    private Color(String hexNumber) {
+    Color(String hexNumber) {
         this.hexNumber = hexNumber;
     }
 
