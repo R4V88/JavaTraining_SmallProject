@@ -2,18 +2,18 @@ package model.enums;
 
 public enum ProductsSeparators {
 
-    PRODUCTS_SEPARATOR(","),
+    PRODUCT_SEPARATOR(","),
     PRODUCT_ID("P"),
     CLOTH_ID("C"),
     BOOTS_ID("B");
 
-    private String separator;
+    private String value;
 
-    ProductsSeparators(String separator) {
-        this.separator = separator;
+    ProductsSeparators(String value) {
+        this.value = value;
     }
 
-    public String getSeparator() {
-        return separator;
+    public String getValue() {
+        return value;
     }
 }

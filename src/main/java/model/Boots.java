@@ -1,9 +1,10 @@
 package model;
 
+import model.enums.ProductsSeparators;
+
 public class Boots extends Product {
     private int size;
     private boolean isNaturalSkin;
-    public static final char PRODUCT_TYPE = 'B';
 
     public Boots(long id, String productName, float price, float weight, String color, int productCount, int size, boolean isNaturalSkin) {
         super(id, productName, price, weight, color, productCount);
@@ -21,6 +22,9 @@ public class Boots extends Product {
 
     @Override
     public String toString() {
-        return PRODUCT_TYPE + PRODUCT_SEPARATOR + getBasicProductString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + isNaturalSkin;
+        return ProductsSeparators.BOOTS_ID.getValue() + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                getBasicProductString() + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                size + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                isNaturalSkin;
     }
 }

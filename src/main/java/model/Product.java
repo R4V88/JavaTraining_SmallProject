@@ -1,14 +1,14 @@
 package model;
 
+import model.enums.ProductsSeparators;
+
 public class Product {
-    public static final String PRODUCT_SEPARATOR = ",";
     private long id;
     private String productName;
     private float price;
     private float weight;
     private String color;
     private int productCount;
-    public static final char PRODUCT_TYPE = 'P';
 
     public Product(long id, String productName, float price, float weight, String color, int productCount) {
         this.id = id;
@@ -53,21 +53,21 @@ public class Product {
 
     @Override
     public String toString() {
-        return PRODUCT_TYPE + PRODUCT_SEPARATOR +
-                id + PRODUCT_SEPARATOR +
-                productName + PRODUCT_SEPARATOR +
-                price + PRODUCT_SEPARATOR +
-                weight + PRODUCT_SEPARATOR +
-                color + PRODUCT_SEPARATOR +
+        return ProductsSeparators.PRODUCT_ID.getValue() + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                id + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                productName + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                price + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                weight + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                color + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
                 productCount;
     }
 
     public String getBasicProductString() {
-        return id + PRODUCT_SEPARATOR +
-                productName + PRODUCT_SEPARATOR +
-                price + PRODUCT_SEPARATOR +
-                weight + PRODUCT_SEPARATOR +
-                color + PRODUCT_SEPARATOR +
+        return id + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                productName + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                price + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                weight + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                color + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
                 productCount;
 
     }

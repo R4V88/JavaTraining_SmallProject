@@ -1,5 +1,7 @@
 package model;
 
+import model.enums.ProductsSeparators;
+
 public class Cloth extends Product {
     private String size;
     private String material;
@@ -21,7 +23,10 @@ public class Cloth extends Product {
 
     @Override
     public String toString() {
-        return PRODUCT_TYPE + PRODUCT_SEPARATOR + getBasicProductString() +PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material + PRODUCT_SEPARATOR;
+        return ProductsSeparators.CLOTH_ID.getValue() + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                getBasicProductString() + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                size + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
+                material + ProductsSeparators.PRODUCT_SEPARATOR.getValue();
     }
 
 }
