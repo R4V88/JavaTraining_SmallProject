@@ -8,7 +8,6 @@ import model.User;
 import validator.UserValidator;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -33,22 +32,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean addUser(User user) {
         try {
-            if(isLoginAlreadyExist(user.getLogin())){
+            if (isLoginAlreadyExist(user.getLogin())) {
                 throw new UserLoginAlreadyExistException();
             }
-            if(userValidator.isValidate(user)){
+            if (userValidator.isValidate(user)) {
                 userDao.saveUser(user);
                 return true;
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
+            ;
         }
         return false;
     }
 
     private boolean isLoginAlreadyExist(String login) {
         User user = getUserByLogin(login);
-        return  user != null;
+        return user != null;
     }
 
     @Override
@@ -58,13 +58,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(long id) throws IOException {
-      List <User> users = getAllUsers();
-      for(User user: users){
-          if(user.getId() == id){
-              return user;
-          }
-      }
-      return null;
+        List<User> users = getAllUsers();
+        for (User user : users) {
+            if (user.getId() == id) {
+                return user;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -72,12 +72,12 @@ public class UserServiceImpl implements UserService {
         List<User> users = null;
         try {
             users = getAllUsers();
-            for(User user : users) {
-                if(user.getLogin().equals(login)){
+            for (User user : users) {
+                if (user.getLogin().equals(login)) {
                     return user;
                 }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     public boolean isCorrectLoginAndPassword(String login, String password) {
         User found = getUserByLogin(login);
 
-        if(found == null) {
+        if (found == null) {
             return false;
         }
 

@@ -1,30 +1,32 @@
 package model;
 
-import model.enums.ProductsSeparators;
+import model.enums.Color;
+import model.enums.ProductSeparators;
+import model.enums.SkinType;
 
 public class Boots extends Product {
     private int size;
-    private boolean isNaturalSkin;
+    private SkinType skinType;
 
-    public Boots(long id, String productName, float price, float weight, String color, int productCount, int size, boolean isNaturalSkin) {
+    public Boots(long id, String productName, float price, float weight, Color color, int productCount, int size, SkinType skinType) {
         super(id, productName, price, weight, color, productCount);
         this.size = size;
-        this.isNaturalSkin = isNaturalSkin;
+        this.skinType = skinType;
     }
 
     public int getSize() {
         return size;
     }
 
-    public boolean isNaturalSkin() {
-        return isNaturalSkin;
+    public SkinType isSkinType() {
+        return skinType;
     }
 
     @Override
     public String toString() {
-        return ProductsSeparators.BOOTS_ID.getValue() + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
-                getBasicProductString() + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
-                size + ProductsSeparators.PRODUCT_SEPARATOR.getValue() +
-                isNaturalSkin;
+        return ProductSeparators.BOOTS_ID.getValue() + ProductSeparators.PRODUCT_SEPARATOR.getValue() +
+                getBasicProductString() + ProductSeparators.PRODUCT_SEPARATOR.getValue() +
+                size + ProductSeparators.PRODUCT_SEPARATOR.getValue() +
+                skinType;
     }
 }

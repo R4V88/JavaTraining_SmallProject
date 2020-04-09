@@ -10,14 +10,14 @@ public class ProductValidator {
 
     private static ProductValidator instance = null;
 
-    public static ProductValidator getInstance(){
-        if(instance == null) {
+    public static ProductValidator getInstance() {
+        if (instance == null) {
             instance = new ProductValidator();
         }
         return instance;
     }
 
-    private ProductValidator(){
+    private ProductValidator() {
 
     }
 

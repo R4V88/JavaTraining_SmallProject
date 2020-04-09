@@ -40,23 +40,23 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductByName(String productName) throws IOException {
         List<Product> products = productDao.getAllProducts();
 
-        for(Product product : products){
-            if(product.getProductName().equals(productName)){
+        for (Product product : products) {
+            if (product.getProductName().equals(productName)) {
                 return product;
             }
         }
         return null;
     }
 
-    public Product getProductById (long id) throws  IOException{
+    public Product getProductById(long id) throws IOException {
 
-            List<Product> products = productDao.getAllProducts();
+        List<Product> products = productDao.getAllProducts();
 
-            for(Product product : products){
-                if(product.getId() == id){
-                    return product;
-                }
+        for (Product product : products) {
+            if (product.getId() == id) {
+                return product;
             }
+        }
 
         return null;
     }
@@ -99,7 +99,7 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
         }
 
-        if(product == null) return false;
+        if (product == null) return false;
 
         return true;
     }
@@ -107,11 +107,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean saveProduct(Product product) {
         try {
-            if(productValidator.isValidate(product)){
+            if (productValidator.isValidate(product)) {
                 productDao.saveProduct(product);
                 return true;
             }
-            } catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return false;

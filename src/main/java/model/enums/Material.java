@@ -1,5 +1,5 @@
 package model.enums;
 
 public enum Material {
-    LEATHER, FUR, COTTON, WOOL, POLYESTER;
+    LEATHER, FUR, COTTON, WOOL, POLYESTERS;
 }
