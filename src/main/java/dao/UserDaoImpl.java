@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 
-    private static UserDaoImpl instance = null;
+    private static UserDao instance = new UserDaoImpl();
 
     private Connection connection;
     private final String DATABASE_NAME = "management";
@@ -19,10 +19,7 @@ public class UserDaoImpl implements UserDao {
 
 
     public static UserDao getInstance() {
-        if (instance == null) {
-            instance = new UserDaoImpl();
-        }
-        return instance;
+        return UserDaoImpl.instance;
     }
 
     public UserDaoImpl() {
