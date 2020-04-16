@@ -4,10 +4,11 @@ import api.UserDao;
 import api.UserService;
 import dao.UserDaoImpl;
 import exception.UserLoginAlreadyExistException;
+import exception.UserShortLengthLoginException;
+import exception.UserShortLengthPasswordException;
 import model.User;
 import validator.UserValidator;
 
-import java.io.IOException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -25,23 +26,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() throws IOException {
+    public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
     @Override
-    public boolean addUser(User user) {
-        try {
-            if (isLoginAlreadyExist(user.getLogin())) {
-                throw new UserLoginAlreadyExistException();
-            }
-            if (userValidator.isValidate(user)) {
-                userDao.saveUser(user);
-                return true;
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            ;
+    public boolean addUser(User user) throws UserLoginAlreadyExistException, UserShortLengthPasswordException, UserShortLengthLoginException {
+        if (isLoginAlreadyExist(user.getLogin())) {
+            throw new UserLoginAlreadyExistException();
+        }
+        if (userValidator.isValidate(user)) {
+            userDao.saveUser(user);
+            return true;
         }
         return false;
     }
@@ -52,12 +48,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeUserById(long userId) throws IOException {
+    public void removeUserById(long userId) {
         userDao.removeUserById(userId);
     }
 
     @Override
-    public User getUserById(long id) throws IOException {
+    public User getUserById(long id) {
         List<User> users = getAllUsers();
         for (User user : users) {
             if (user.getId() == id) {
@@ -70,15 +66,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByLogin(String login) {
         List<User> users = null;
-        try {
-            users = getAllUsers();
-            for (User user : users) {
-                if (user.getLogin().equals(login)) {
-                    return user;
-                }
+        users = getAllUsers();
+        for (User user : users) {
+            if (user.getLogin().equals(login)) {
+                return user;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }

@@ -2,19 +2,23 @@ package dao;
 
 import api.UserDao;
 import model.User;
-import model.parser.UserParser;
-import utils.FileUtils;
 
-import java.io.*;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 
-    private final String FILE_NAME = "users.data";
     private static UserDaoImpl instance = null;
 
-    public static UserDaoImpl getInstance() {
+    private Connection connection;
+    private final String DATABASE_NAME = "management";
+    private final String TABLE_NAME = "users";
+    private final String USER = "root";
+    private final String PASSWORD = "root";
+
+
+    public static UserDao getInstance() {
         if (instance == null) {
             instance = new UserDaoImpl();
         }
@@ -22,84 +26,109 @@ public class UserDaoImpl implements UserDao {
     }
 
     public UserDaoImpl() {
+        init();
+    }
+
+    private void init() {
         try {
-            FileUtils.createNewFile(FILE_NAME);
-        } catch (IOException e) {
-            System.out.println("Error - wrong file path!");
-            //exit zamyka cała aplikacje.
-            System.exit(-1);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/" + DATABASE_NAME + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", USER, PASSWORD);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void saveUsers(List<User> users) throws FileNotFoundException {
-        PrintWriter pw = new PrintWriter(new FileOutputStream(FILE_NAME, true));
-        for (User user : users) {
-            pw.write(user.toString() + "\n");
+    public void saveUser(User user) {
+        PreparedStatement statement;
+        try {
+            String query = "insert into " + TABLE_NAME + " (login, password) values(? , ?)";
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        pw.close();
     }
 
     @Override
-    public void saveUser(User user) throws IOException {
-        List<User> users = getAllUsers();
-        users.add(user);
-        saveUsers(users);
-    }
-
-    @Override
-    public List<User> getAllUsers() throws IOException {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(FILE_NAME));
-        String lineFromFile;
-        while ((lineFromFile = br.readLine()) != null) {
-            User user = UserParser.stringToUser(lineFromFile);
-            users.add(user);
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            String query = "select * from " + TABLE_NAME;
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+                String login = resultSet.getString("login");
+                String password = resultSet.getString("password");
+
+                User user = new User(id, login, password);
+                users.add(user);
+            }
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        br.close();
         return users;
     }
 
-    public User getUserByLogin(String login) throws IOException {
-        List<User> userList = getAllUsers();
-        for (User user : userList) {
-            if (user.getLogin().equals(login)) {
-                return user;
-            }
-        }
-        return null;
-    }
+    @Override
+    public void updateUser(User user) {
+        PreparedStatement statement;
+        try {
+            String query = "update table " + TABLE_NAME + " set login = ?, password = ? where id = ?";
+            statement = connection.prepareStatement(query);
 
-    public User getUserById(long id) throws IOException {
-        List<User> userList = getAllUsers();
-        for (User user : userList) {
-            if (user.getId() == id) {
-                return user;
-            }
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setLong(3, user.getId());
+
+            statement.execute();
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public void removeUserByLogin(String login) throws IOException {
-        List<User> userList = getAllUsers();
-        for (int i = 0; i < userList.size(); i++) {
-            if (userList.get(i).getLogin().equals(login)) {
-                userList.remove(userList.get(i));
-            }
+    public void removeUserByLogin(String login) {
+        PreparedStatement statement;
+        try {
+            String query = "delete from " + TABLE_NAME + " where login = ?";
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, login);
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        saveUsers(userList);
 
     }
 
     @Override
-    public void removeUserById(long id) throws IOException {
-        List<User> userList = getAllUsers();
-        for (int i = 0; i < userList.size(); i++) {
-            if (userList.get(i).getId() == id) {
-                userList.remove(userList.get(i));
-            }
+    public void removeUserById(long id) {
+        PreparedStatement statement;
+        try {
+            String query = "delete from " + TABLE_NAME + " where id=?";
+            statement = connection.prepareStatement(query);
+
+            statement.setLong(1, id);
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        saveUsers(userList);
     }
 }

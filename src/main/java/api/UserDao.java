@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.List;
 
 public interface UserDao {
-    void saveUser(User user) throws IOException;
+    void saveUser(User user);
 
-    void saveUsers(List<User> users) throws FileNotFoundException;
 
-    void removeUserById(long id) throws IOException;
+    void removeUserById(long id);
+    void removeUserByLogin(String login);
 
-    void removeUserByLogin(String login) throws IOException;
+    List<User> getAllUsers();
 
-    List<User> getAllUsers() throws IOException;
+    void updateUser(User user);
 }

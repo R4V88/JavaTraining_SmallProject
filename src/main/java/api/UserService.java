@@ -1,5 +1,8 @@
 package api;
 
+import exception.UserLoginAlreadyExistException;
+import exception.UserShortLengthLoginException;
+import exception.UserShortLengthPasswordException;
 import model.User;
 
 import java.io.IOException;
@@ -9,7 +12,7 @@ public interface UserService {
 
     List<User> getAllUsers() throws IOException;
 
-    boolean addUser(User user);
+    boolean addUser(User user) throws UserLoginAlreadyExistException, UserShortLengthPasswordException, UserShortLengthLoginException;
 
     void removeUserById(long userId) throws IOException;
 

@@ -1,5 +1,9 @@
 package api;
 
+import exception.ProductCountNegativeException;
+import exception.ProductNameEmptyException;
+import exception.ProductPriceNoPositiveException;
+import exception.ProductWeightNoPositiveException;
 import model.Product;
 
 import java.io.IOException;
@@ -13,12 +17,12 @@ public interface ProductService {
 
     Product getProductByName(String productName) throws IOException;
 
-    boolean isProductInWarehouse(String productName);
+    boolean isProductInWarehouse(String productName) throws IOException;
 
-    boolean isProductExist(String productName);
+    boolean isProductExist(String productName) throws IOException;
 
-    boolean isProductExist(long productId);
+    boolean isProductExist(long productId) throws IOException;
 
-    boolean saveProduct(Product product);
-
+    boolean saveProduct(Product product) throws ProductWeightNoPositiveException, ProductNameEmptyException, ProductCountNegativeException, ProductPriceNoPositiveException, IOException;
+    void removeProduct(String productName) throws Exception;
 }

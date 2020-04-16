@@ -2,6 +2,9 @@ package facade;
 
 import api.UserRegisterLoginFacade;
 import api.UserService;
+import exception.UserLoginAlreadyExistException;
+import exception.UserShortLengthLoginException;
+import exception.UserShortLengthPasswordException;
 import model.User;
 import service.UserServiceImpl;
 
@@ -22,8 +25,14 @@ public class UserRegisterLoginFacadeImpl implements UserRegisterLoginFacade {
     }
 
     @Override
-    public boolean registerUser(User user) {
-        return userService.addUser(user);
+    public String registerUser(User user) {
+        try {
+            userService.addUser(user);
+            return "Register successfully";
+        } catch (UserLoginAlreadyExistException | UserShortLengthLoginException | UserShortLengthPasswordException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
 
     @Override
@@ -31,7 +40,6 @@ public class UserRegisterLoginFacadeImpl implements UserRegisterLoginFacade {
         if (userService.isCorrectLoginAndPassword(login, password)) {
             return true;
         }
-
         return false;
     }
 

@@ -31,4 +31,5 @@ public class User {
         return id + USER_SEPARATOR + login + USER_SEPARATOR + password;
     }
 
+
 }
