@@ -1,6 +1,7 @@
 import exception.UserLoginAlreadyExistException;
 import exception.UserShortLengthLoginException;
 import exception.UserShortLengthPasswordException;
+import model.User;
 
 import java.io.IOException;
 

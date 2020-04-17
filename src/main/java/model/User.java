@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class User {
 
     public final static String USER_SEPARATOR = ",";
@@ -30,6 +32,5 @@ public class User {
     public String toString() {
         return id + USER_SEPARATOR + login + USER_SEPARATOR + password;
     }
-
 
 }
